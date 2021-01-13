@@ -1,10 +1,15 @@
 package com.zhanfan.gulimall.product.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
 /**
@@ -37,8 +42,9 @@ public class CategoryEntity implements Serializable {
 	 */
 	private Integer catLevel;
 	/**
-	 * 是否显示[0-不显示，1显示]
+	 * 逻辑删除：是否显示[0-不显示，1显示]
 	 */
+	@TableLogic(value = "1",delval = "0")
 	private Integer showStatus;
 	/**
 	 * 排序
@@ -56,5 +62,10 @@ public class CategoryEntity implements Serializable {
 	 * 商品数量
 	 */
 	private Integer productCount;
-
+	/**
+	 * 子菜单
+	 */
+	@JsonInclude(JsonInclude.Include.NON_EMPTY) //此项不为空时，才在json数据中携带该项
+	@TableField(exist = false)	//表示此项数据在数据库中不存在
+	private List<CategoryEntity> children;
 }
